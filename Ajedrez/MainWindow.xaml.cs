@@ -17,13 +17,14 @@ namespace Ajedrez {
     /// Lógica de interacción para MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window {
+        const int gridSize = 30;
         public MainWindow() {
             InitializeComponent();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e) {
-            MessageBox.Show("Boton");
             Program.MiFuncion();
+            checker.Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.LightBlue);
         }
     }
 }

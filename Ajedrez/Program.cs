@@ -1,4 +1,5 @@
 ﻿using System;
+using SixLabors.ImageSharp;
 
 namespace Ajedrez {
     public static class Program {
