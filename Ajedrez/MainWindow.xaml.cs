@@ -23,6 +23,7 @@ namespace Ajedrez {
         }
 
         private void Button_Click(object sender, RoutedEventArgs e) {
+            Program.MiFuncion();
             checker.Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.LightBlue);
             CreateBoard();
         }
@@ -73,8 +74,6 @@ namespace Ajedrez {
             else
                  color = new System.Windows.Media.
                     SolidColorBrush(System.Windows.Media.Colors.Black);
-            Console.WriteLine("Color: " + i);
-            Console.WriteLine(color);
             return color;
         }
     }
