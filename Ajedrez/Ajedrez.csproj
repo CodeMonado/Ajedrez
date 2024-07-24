@@ -12,7 +12,11 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="8.0.6" />
     <PackageReference Include="SixLabors.ImageSharp" Version="3.1.4" />
-    <Page Include="App.xaml" />
+	  <Page Include="App.xaml" >
+		  <Generator>MSBuild:Compile</Generator>
+		  <SubType>Designer</SubType>
+	  </Page>
+
 	  <Reference Include="PresentationCore">
 		  <HintPath>C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\8.0.5\PresentationCore.dll</HintPath>
 	  </Reference>

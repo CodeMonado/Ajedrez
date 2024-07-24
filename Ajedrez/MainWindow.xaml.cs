@@ -23,8 +23,59 @@ namespace Ajedrez {
         }
 
         private void Button_Click(object sender, RoutedEventArgs e) {
-            Program.MiFuncion();
             checker.Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.LightBlue);
+            CreateBoard();
+        }
+
+        private void CreateBoard() {
+            RowDefinition[] cellW = new RowDefinition[8];
+            ColumnDefinition[] cellH = new ColumnDefinition[8];
+            Grid[] gridArr = new Grid[64];
+            int color = 0;
+            int cycle = 1;
+            int num = 0;
+
+            for (int i = 1; i <= 64; i++) {
+                Grid grid = new Grid {
+                    Width = 600 / 8,
+                    Height = 600 / 8,
+                    Name = "cell" + i + 1.ToString(),
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    Background = ColorCell(color),
+                };
+
+                gridArr[i - 1] = grid;
+
+                color++;
+                if (i == 8 * cycle) {
+                    color++;
+                    cycle++;
+                }
+            }
+
+            for (int j = 0; j < 8; j++) {
+                for (int k = 0; k < 8; k++) {
+                    
+                    Grid.SetColumn(gridArr[num], j);
+                    Grid.SetRow(gridArr[num], k);
+                    checker.Children.Add(gridArr[num]);
+                    num++;
+
+                }
+            } 
+        }
+        private static SolidColorBrush ColorCell(int i) {
+            SolidColorBrush color = new SolidColorBrush();
+            if ((i + 1) % 2 == 1)
+                 color = new System.Windows.Media.
+                    SolidColorBrush(System.Windows.Media.Colors.Beige);
+            else
+                 color = new System.Windows.Media.
+                    SolidColorBrush(System.Windows.Media.Colors.Black);
+            Console.WriteLine("Color: " + i);
+            Console.WriteLine(color);
+            return color;
         }
     }
 }
