@@ -35,5 +35,10 @@
 
 
 
+ 
+   </Grid>
+
+    <Grid Width="600" Height="600" x:Name="pieces">
+        
     </Grid>
 </Window>
