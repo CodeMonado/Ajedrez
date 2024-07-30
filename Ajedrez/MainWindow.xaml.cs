@@ -25,8 +25,6 @@ namespace Ajedrez {
         }
 
         private void Button_Click(object sender, RoutedEventArgs e) {
-            Program.MiFuncion();
-            checker.Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.LightBlue);
             CreateBoard();
             CreatePieces();
         }
@@ -79,7 +77,7 @@ namespace Ajedrez {
             string wqPath = "C:/Users/ReyRo/OneDrive/Documents/Proyectos/C#/Ajedrez/Ajedrez/Assets/queenWhite.png";
             string bqPath = "C:/Users/ReyRo/OneDrive/Documents/Proyectos/C#/Ajedrez/Ajedrez/Assets/queenBlack.png";
             string wrPath = "C:/Users/ReyRo/OneDrive/Documents/Proyectos/C#/Ajedrez/Ajedrez/Assets/rookWhite.png";
-            string brPath = "C:/Users/ReyRo/OneDrive/Documents/Proyectos/C#/Ajedrez/Ajedrez/Assets/rookWhite.png";
+            string brPath = "C:/Users/ReyRo/OneDrive/Documents/Proyectos/C#/Ajedrez/Ajedrez/Assets/rookBlack.png";
             string wknPath = "C:/Users/ReyRo/OneDrive/Documents/Proyectos/C#/Ajedrez/Ajedrez/Assets/knightWhite.png";
             string bknPath = "C:/Users/ReyRo/OneDrive/Documents/Proyectos/C#/Ajedrez/Ajedrez/Assets/knightBlack.png";
             string wbPath = "C:/Users/ReyRo/OneDrive/Documents/Proyectos/C#/Ajedrez/Ajedrez/Assets/bishopWhite.png";
@@ -99,7 +97,8 @@ namespace Ajedrez {
 
                 Wincon.Grid.SetColumn(imageWP, i);
                 Wincon.Grid.SetRow(imageWP, 6);
-                checker.Children.Add(imageWP);
+                imageWP.MouseDown += Grid_MouseDown;
+                pieces.Children.Add(imageWP);
             }
 
             // Crear peones negros
@@ -115,7 +114,8 @@ namespace Ajedrez {
 
                 Wincon.Grid.SetColumn(imageBP, i);
                 Wincon.Grid.SetRow(imageBP, 1);
-                checker.Children.Add(imageBP);
+                imageBP.MouseDown += Grid_MouseDown;
+                pieces.Children.Add(imageBP);
             }
 
             //Crear rey negro
@@ -129,7 +129,8 @@ namespace Ajedrez {
             };
             Wincon.Grid.SetColumn(imageBK, 4);
             Wincon.Grid.SetRow(imageBK, 0);
-            checker.Children.Add(imageBK);
+            imageBK.MouseDown += Grid_MouseDown;
+            pieces.Children.Add(imageBK);
 
             //Crear rey blanco
             BitmapImage bitmapWK = new BitmapImage(new Uri(wkPath));
@@ -142,7 +143,8 @@ namespace Ajedrez {
             };
             Wincon.Grid.SetColumn(imageWK, 4);
             Wincon.Grid.SetRow(imageWK, 7);
-            checker.Children.Add(imageWK);
+            imageWK.MouseDown += Grid_MouseDown;
+            pieces.Children.Add(imageWK);
 
             //Crear reina negra
             BitmapImage bitmapBQ = new BitmapImage(new Uri(bqPath));
@@ -155,7 +157,8 @@ namespace Ajedrez {
             };
             Wincon.Grid.SetColumn(imageBQ, 3);
             Wincon.Grid.SetRow(imageBQ, 0);
-            checker.Children.Add(imageBQ);
+            imageBQ.MouseDown += Grid_MouseDown;
+            pieces.Children.Add(imageBQ);
 
             //Crear reina blanca
             BitmapImage bitmapWQ = new BitmapImage(new Uri(wqPath));
@@ -168,7 +171,8 @@ namespace Ajedrez {
             };
             Wincon.Grid.SetColumn(imageWQ, 3);
             Wincon.Grid.SetRow(imageWQ, 7);
-            checker.Children.Add(imageWQ);
+            imageWQ.MouseDown += Grid_MouseDown;
+            pieces.Children.Add(imageWQ);
 
             //Crear alfiles negros
             BitmapImage bitmapBB = new BitmapImage(new Uri(bbPath));
@@ -181,7 +185,8 @@ namespace Ajedrez {
             };
             Wincon.Grid.SetColumn(imageBB, 2);
             Wincon.Grid.SetRow(imageBB, 0);
-            checker.Children.Add(imageBB);
+            imageBB.MouseDown += Grid_MouseDown;
+            pieces.Children.Add(imageBB);
 
             bitmapBB = new BitmapImage(new Uri(bbPath));
 
@@ -193,7 +198,8 @@ namespace Ajedrez {
             };
             Wincon.Grid.SetColumn(imageBB, 5);
             Wincon.Grid.SetRow(imageBB, 0);
-            checker.Children.Add(imageBB);
+            imageBB.MouseDown += Grid_MouseDown;
+            pieces.Children.Add(imageBB);
 
             //Crear alfiles blancos
             BitmapImage bitmapWB = new BitmapImage(new Uri(wbPath));
@@ -206,7 +212,8 @@ namespace Ajedrez {
             };
             Wincon.Grid.SetColumn(imageWB, 2);
             Wincon.Grid.SetRow(imageWB, 7);
-            checker.Children.Add(imageWB);
+            imageWB.MouseDown += Grid_MouseDown;
+            pieces.Children.Add(imageWB);
 
             bitmapWB = new BitmapImage(new Uri(wbPath));
 
@@ -218,7 +225,8 @@ namespace Ajedrez {
             };
             Wincon.Grid.SetColumn(imageWB, 5);
             Wincon.Grid.SetRow(imageWB, 7);
-            checker.Children.Add(imageWB);
+            imageWB.MouseDown += Grid_MouseDown;
+            pieces.Children.Add(imageWB);
 
             //Crear caballeros negros
             BitmapImage bitmapBKn = new BitmapImage(new Uri(bknPath));
@@ -231,7 +239,8 @@ namespace Ajedrez {
             };
             Wincon.Grid.SetColumn(imageBKn, 1);
             Wincon.Grid.SetRow(imageBKn, 0);
-            checker.Children.Add(imageBKn);
+            imageBKn.MouseDown += Grid_MouseDown;
+            pieces.Children.Add(imageBKn);
 
             bitmapBKn = new BitmapImage(new Uri(bknPath));
 
@@ -243,7 +252,8 @@ namespace Ajedrez {
             };
             Wincon.Grid.SetColumn(imageBKn, 6);
             Wincon.Grid.SetRow(imageBKn, 0);
-            checker.Children.Add(imageBKn);
+            imageBKn.MouseDown += Grid_MouseDown;
+            pieces.Children.Add(imageBKn);
 
             //Crear caballeros blancos
             BitmapImage bitmapWKn = new BitmapImage(new Uri(wknPath));
@@ -256,7 +266,8 @@ namespace Ajedrez {
             };
             Wincon.Grid.SetColumn(imageWKn, 1);
             Wincon.Grid.SetRow(imageWKn, 7);
-            checker.Children.Add(imageWKn);
+            imageWKn.MouseDown += Grid_MouseDown;
+            pieces.Children.Add(imageWKn);
 
             bitmapWKn = new BitmapImage(new Uri(wknPath));
 
@@ -268,7 +279,8 @@ namespace Ajedrez {
             };
             Wincon.Grid.SetColumn(imageWKn, 6);
             Wincon.Grid.SetRow(imageWKn, 7);
-            checker.Children.Add(imageWKn);
+            imageWKn.MouseDown += Grid_MouseDown;
+            pieces.Children.Add(imageWKn);
 
             //Crear torres negras
             BitmapImage bitmapBR = new BitmapImage(new Uri(brPath));
@@ -281,9 +293,10 @@ namespace Ajedrez {
             };
             Wincon.Grid.SetColumn(imageBR, 0);
             Wincon.Grid.SetRow(imageBR, 0);
-            checker.Children.Add(imageBR);
+            imageBR.MouseDown += Grid_MouseDown;
+            pieces.Children.Add(imageBR);
 
-            bitmapBR = new BitmapImage(new Uri(bknPath));
+            bitmapBR = new BitmapImage(new Uri(brPath));
 
             imageBR = new Wincon.Image {
                 Name = "BlackRook",
@@ -293,7 +306,8 @@ namespace Ajedrez {
             };
             Wincon.Grid.SetColumn(imageBR, 7);
             Wincon.Grid.SetRow(imageBR, 0);
-            checker.Children.Add(imageBR);
+            imageBR.MouseDown += Grid_MouseDown;
+            pieces.Children.Add(imageBR);
 
             //Crear torres blancas
             BitmapImage bitmapWR = new BitmapImage(new Uri(wrPath));
@@ -306,7 +320,8 @@ namespace Ajedrez {
             };
             Wincon.Grid.SetColumn(imageWR, 0);
             Wincon.Grid.SetRow(imageWR, 7);
-            checker.Children.Add(imageWR);
+            imageWR.MouseDown += Grid_MouseDown;
+            pieces.Children.Add(imageWR);
 
             bitmapWR = new BitmapImage(new Uri(wrPath));
 
@@ -318,7 +333,8 @@ namespace Ajedrez {
             };
             Wincon.Grid.SetColumn(imageWR, 7);
             Wincon.Grid.SetRow(imageWR, 7);
-            checker.Children.Add(imageWR);
+            imageWR.MouseDown += Grid_MouseDown;
+            pieces.Children.Add(imageWR);
         }
 
 
@@ -331,6 +347,12 @@ namespace Ajedrez {
                  color = new System.Windows.Media.
                     SolidColorBrush(System.Windows.Media.Colors.DarkGreen);
             return color;
+        }
+
+        private void Image_MouseDown(object sender, MouseEventArgs e) {
+            if (sender is Wincon.Image image) {
+                MessageBox.Show("Haz hecho click en el grid : " + image.Name );
+            }
         }
     }
 }

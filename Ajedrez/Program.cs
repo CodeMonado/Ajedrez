@@ -11,10 +11,5 @@ namespace Ajedrez {
             Console.WriteLine("MiFuncion ha sido llamada.");
         }
 
-        static void LoadImages() {
-            Image image = Image.Load("bishopBlack.png");
-
-            
-        }
     }
 }
