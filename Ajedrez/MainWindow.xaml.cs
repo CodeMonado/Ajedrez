@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using System.Collections.Generic;
 using Drawing = System.Drawing;
 using System.Linq;
@@ -14,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Popo = System.Windows.Shapes;
 using Caca = System.Drawing;
+using System.Diagnostics.Metrics;
 
 
 namespace Ajedrez {
@@ -22,7 +24,12 @@ namespace Ajedrez {
         private bool hasObject = false;
         private int turn;
         static ChessBase chessBase = new ChessBase();
+        UIElement pieceImage = null;
+        int[,] move = null;
+        int piece = 0;
+        Grid[,] gridArr = new Grid[8, 8];
         int[,] gameBoard = chessBase._newBoard;
+        int[,] placeBoard = new int[8, 8];
 
         public MainWindow() {
             InitializeComponent();
@@ -37,11 +44,13 @@ namespace Ajedrez {
         private void CreateBoard() {
             RowDefinition[] cellW = new RowDefinition[8];
             ColumnDefinition[] cellH = new ColumnDefinition[8];
-            Grid[,] gridArr = new Grid[8, 8];
-            int color = 0;
-            int counter = 1;
-            int cycle = 1;
+            
             int num = 0;
+            
+            for(int i = 0; i < 8; i++) 
+                for (int j = 0; j < 8; j++)
+                    placeBoard[i, j] = 0;
+            
 
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
@@ -51,20 +60,15 @@ namespace Ajedrez {
                         Name = "cell" + i + 1.ToString(),
                         HorizontalAlignment = HorizontalAlignment.Center,
                         VerticalAlignment = VerticalAlignment.Center,
-                        Background = ColorCell(color),
                     };
+                    
                     grid.MouseDown += Image_MouseDown;
 
                     gridArr[i, j] = grid;
-                    counter++;
                     
-                    color++;
-                    if (counter == 8 * cycle) {
-                        color++;
-                        cycle++;
-                    }
                 }
             }
+            
 
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
@@ -75,63 +79,130 @@ namespace Ajedrez {
                     num++;
 
                 }
-            } 
+            }
+            ResetBoard();
         }
 
         
 
 
-        private static SolidColorBrush ColorCell(int i) {
-            SolidColorBrush color = new SolidColorBrush();
-            if ((i + 1) % 2 == 1)
-                 color = new SolidColorBrush(Colors.Beige);
-            else
-                 color = new SolidColorBrush(Colors.DarkGreen);
-            return color;
+        
+
+        private void ColorMovement(int row, int col, int[,] move) {
+            SolidColorBrush color = new SolidColorBrush(Colors.Cyan);
+
+            for (int i = 0; i < 8; i++) {
+                for (int j = 0; j < 8; j++) {
+                    if (placeBoard[i, j] == 1) {
+                        gridArr[j, i].Background = color;
+                    }
+                }
+            }
+        }
+
+        private void ResetBoard() {
+            int counter = 1;
+            int cycle = 1;
+            SolidColorBrush color;
+            
+
+            for (int i = 1; i <= 8; i++) {
+                for (int j = 1; j <= 8; j++) {
+                    counter++;
+                    if (counter % 2 == 1)
+                        color = new SolidColorBrush(Colors.Beige);
+                    else
+                        color = new SolidColorBrush(Colors.DarkGreen);
+                    gridArr[i - 1, j - 1].Background = color;
+                    if (counter == 9 * cycle) {
+                        cycle++;
+                        counter++;
+                    }
+
+                }
+                
+            }
+
+            
         }
 
         private void Image_MouseDown(object sender, MouseEventArgs e) {
-            int[,] move = null;
-            int piece  = 0;
-            
+
             if (sender is Image image && !hasObject) {
                 hasObject = !hasObject;
                 SolidColorBrush color = new SolidColorBrush();
                 color = new SolidColorBrush(Colors.Blue);
                 int row = Grid.GetRow(image);
                 int col = Grid.GetColumn(image);
+                pieceImage = image;
 
                 switch (gameBoard[row, col]) {
                     case 1:
-                        move = chessBase.WhitePawnMovement(row, col);
+                        placeBoard = chessBase.WhitePawnMovement(row, col);
                         piece = 1;
+                        
                         break;
                         
-                    case 2:
-                        move = chessBase.WhiteRookMovement(row, col);
+                    case 2 or 8:
+                        placeBoard = chessBase.RookMovement(row, col);
                         piece = 2;
+                        
+                        break;
+                    case 3 or 9:
+                        placeBoard = chessBase.KnightMovement(row, col);
+                        piece = 3;
+                        
                         break;
                 }
-                if(move != null) {
+                if(placeBoard != null) {
                     pieces.Children.Remove(image);
                     gameBoard[row, col] = 0;
+                    ColorMovement(row, col, move);
                 }
+                Console.Clear();
+                for(int i = 0; i< 8; i++) {
+                    for(int j = 0; j < 8; j++) {
+                        Console.Write("[" + placeBoard[i, j] + "],");
+                    }
+                    Console.WriteLine();
+                }
+                Console.WriteLine(hasObject);
             }
             else if(sender is Grid grid && hasObject) {                
                 int col = Grid.GetColumn(grid);
                 int row = Grid.GetRow(grid);
-                if (gameBoard[row, col] == 0) {
+                Console.WriteLine("row: " + row);
+                Console.WriteLine("col: " + col);
+                Console.WriteLine("piece: "+ piece);
+                if (gameBoard[row, col] == 0 && placeBoard[row, col] == 1) {
                     hasObject = !hasObject;
                     gameBoard[row, col] = piece;
-                        
+                    //if(pieceImage != null)
+                    Grid.SetRow(pieceImage, row);
+                    Grid.SetColumn(pieceImage, col);
+                    pieces.Children.Add(pieceImage);
+                    PrintBoard();
+                    pieceImage = null;
+                    move = null;
+                    for (int i = 0; i < 8; i++) {
+                        for (int j = 0; j < 8; j++) {
+                            placeBoard[i, j] = 0;
+                        }
+                    }
+                    ResetBoard();   
                 }
+                Console.WriteLine(hasObject);
+                
             }
         }
 
         private void CreatePieces() {
             // Ruta de las imágenes
-            string currentDirectory = Directory.GetCurrentDirectory();
-            string imagePath = Path.Combine(currentDirectory, "Assets");
+            string currentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            DirectoryInfo directoryInfo = new DirectoryInfo(currentDirectory);
+            string projectDirectory = directoryInfo.Parent.Parent.Parent.FullName;
+            string imagePath = Path.Combine(projectDirectory, "Assets");
+
             string wpPath = Path.Combine(imagePath, "pawnWhite.png");
             string bpPath = Path.Combine(imagePath, "pawnBlack.png");
             string wkPath = Path.Combine(imagePath, "kingWhite.png");
@@ -397,6 +468,17 @@ namespace Ajedrez {
             Grid.SetRow(imageWR, 7);
             imageWR.MouseDown += Image_MouseDown;
             pieces.Children.Add(imageWR);
+        }
+
+    void PrintBoard() {
+            //Console.Clear();
+
+            for(int i = 0; i < 8; i++) { 
+                for(int j = 0; j < 8; j++) {
+                    Console.Write("[" + gameBoard[i,j] + "],");
+                }
+                Console.WriteLine();
+            }
         }
     }
 }

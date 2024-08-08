@@ -17,30 +17,29 @@ namespace Ajedrez {
             { 2, 3, 4, 5, 6, 4, 3, 2 }
         };
 
-        public int[,] WhitePawnMovement(int row, int column) {
-            int[,] allowedMovement;
-            if (row == 1) {
-                allowedMovement = new int[,]{
-                    { 1},
-                    { 1}
-                };
-            }
-            else
-                allowedMovement = new int[,]{
-                    { 0},
-                    { 1}
-                };
+        int[,] moveBoard = new int[8, 8];
 
-            return allowedMovement;
+        public int[,] WhitePawnMovement(int row, int column) {
+
+            if (row == 6) {
+                for (int i = 0; i < 3; i++) {
+                    moveBoard[row - i, column] = 1;
+                }
+            }
+            else {
+                moveBoard[row, column] = 1;
+                moveBoard[row - 1, column] = 1;
+            }
+            return moveBoard;
         }
 
-        public int[,] WhiteKnightMovement(int row, int col) {
+        public int[,] KnightMovement(int row, int col) {
             int[,] allowedMovement;
 
             allowedMovement = new int[,]{
                 { 0, 1, 0, 1, 0 },
                 { 1, 0, 0, 0, 1 },
-                { 0, 0, 0, 0, 0 },
+                { 0, 0, 1, 0, 0 },
                 { 1, 0, 0, 0, 1 },
                 { 0, 1, 0, 1, 0 },
             };
@@ -48,29 +47,21 @@ namespace Ajedrez {
             return allowedMovement;
         }
 
-        public int[,] WhiteRookMovement(int row, int col) {
-            int[,] allowedMovement = new int[8,8];
+        public int[,] RookMovement(int row, int col) {
             int check = 1;
             //Movimiento abajo-derecha
-            for(int i = row; i < 8; i++) {
-                for (int j = col; j < 8; j++) {
-                    if (i == row + check && j == col + check) {
-                        allowedMovement[i, j] = 1;
-                        check++;
-                    }
-                }
+            for(int i = 0; i < 8; i++) { 
+                moveBoard[row, i] = 1;
+                check++;      
             }
             //Movimiento abajo-izquierda
-            for (int i = row; i < 8; i++) {
-                for (int j = col; j > 0; j--) {
-                    if (i == row + check && j == col + check) {
-                        allowedMovement[i, j] = 1;
-                        check++;
-                    }
-                }
+
+            for (int j = 0; j < 8; j++) {
+                moveBoard[j, col] = 1;
+                check++;  
             }
 
-            return allowedMovement;
+            return moveBoard;
         }
     }
 }
